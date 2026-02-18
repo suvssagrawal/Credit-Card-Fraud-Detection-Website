@@ -359,3 +359,85 @@ This project is open source and available under the MIT License.
 ---
 
 **Project Status:** 🔄 In Development | **Last Updated:** February 2026
+
+# Fraud Detection System
+
+AI-Powered Transaction Security using Machine Learning
+
+## Features
+
+- ✅ Real-time fraud detection
+- ✅ Dynamic dropdowns from trained model
+- ✅ Risk level assessment (Low/Medium/High)
+- ✅ Fraud probability meter
+- ✅ Professional UI/UX
+- ✅ Responsive design
+
+## Installation
+
+1. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+2. Place your trained model:
+```
+model/fraud_detection_complete.pkl
+```
+
+3. Run the application:
+```bash
+python app.py
+```
+
+4. Open browser:
+```
+http://localhost:5000
+```
+
+## Project Structure
+
+```
+fraud-detection-system/
+├── model/
+│   └── fraud_detection_complete.pkl
+├── static/
+│   ├── css/
+│   │   └── style.css
+│   └── js/
+│       └── script.js
+├── templates/
+│   └── index.html
+├── app.py
+├── requirements.txt
+└── README.md
+```
+
+## How It Works
+
+1. User enters transaction details
+2. Backend encodes categorical features using trained encoders
+3. Features are scaled using saved scaler
+4. Random Forest model predicts fraud probability
+5. Results displayed with risk level and visualization
+
+## API Endpoints
+
+- `GET /` - Main page
+- `POST /predict` - Fraud prediction
+- `GET /api/options` - Get available dropdown options
+- `GET /health` - Health check
+
+## Technologies Used
+
+- **Backend:** Flask, Python
+- **ML:** scikit-learn, Random Forest
+- **Frontend:** HTML5, CSS3, JavaScript
+- **Data Processing:** pandas, numpy
+
+## Model Details
+
+- **Algorithm:** Random Forest Classifier
+- **Features:** 7 (amount, hour, is_night, is_high_amount, transaction_type_enc, merchant_category_enc, country_enc)
+- **Balancing:** SMOTE
+- **Performance:** Recall >85%, Precision >80%

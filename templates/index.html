@@ -49,7 +49,7 @@
                         </div>
                     </div>
 
-                    <!-- Transaction Type -->
+                    <!-- Transaction Type - DYNAMIC FROM MODEL -->
                     <div class="form-group">
                         <label for="transaction_type">
                             <span class="label-text">Transaction Type</span>
@@ -57,14 +57,13 @@
                         </label>
                         <select id="transaction_type" name="transaction_type" required>
                             <option value="">Select type...</option>
-                            <option value="ATM">ATM Withdrawal</option>
-                            <option value="POS">Point of Sale (POS)</option>
-                            <option value="Online">Online Payment</option>
-                            <option value="QR">QR Code Payment</option>
+                            {% for type in transaction_types %}
+                            <option value="{{ type }}">{{ type }}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
-                    <!-- Merchant Category -->
+                    <!-- Merchant Category - DYNAMIC FROM MODEL -->
                     <div class="form-group">
                         <label for="merchant_category">
                             <span class="label-text">Merchant Category</span>
@@ -72,15 +71,13 @@
                         </label>
                         <select id="merchant_category" name="merchant_category" required>
                             <option value="">Select category...</option>
-                            <option value="Food">Food & Dining</option>
-                            <option value="Grocery">Grocery & Supermarket</option>
-                            <option value="Travel">Travel & Transport</option>
-                            <option value="Electronics">Electronics & Tech</option>
-                            <option value="Clothing">Clothing & Fashion</option>
+                            {% for category in merchant_categories %}
+                            <option value="{{ category }}">{{ category }}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
-                    <!-- Country -->
+                    <!-- Country - DYNAMIC FROM MODEL -->
                     <div class="form-group">
                         <label for="country">
                             <span class="label-text">Country</span>
@@ -88,12 +85,9 @@
                         </label>
                         <select id="country" name="country" required>
                             <option value="">Select country...</option>
-                            <option value="US">🇺🇸 United States</option>
-                            <option value="UK">🇬🇧 United Kingdom</option>
-                            <option value="FR">🇫🇷 France</option>
-                            <option value="DE">🇩🇪 Germany</option>
-                            <option value="TR">🇹🇷 Turkey</option>
-                            <option value="NG">🇳🇬 Nigeria</option>
+                            {% for country_code in countries %}
+                            <option value="{{ country_code }}">{{ country_code }}</option>
+                            {% endfor %}
                         </select>
                     </div>
 
