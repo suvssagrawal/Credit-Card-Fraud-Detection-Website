@@ -16,11 +16,28 @@ le_country = package['le_country']
 features = package['features']
 print("✅ Model loaded successfully!")
 
+# Extract available options from encoders
+TRANSACTION_TYPES = le_transaction.classes_.tolist()
+MERCHANT_CATEGORIES = le_merchant.classes_.tolist()
+COUNTRIES = le_country.classes_.tolist()
+
+print(f"✅ Transaction types: {TRANSACTION_TYPES}")
+print(f"✅ Merchant categories: {MERCHANT_CATEGORIES}")
+print(f"✅ Countries: {COUNTRIES}")
+
 def predict_fraud(amount, transaction_type, merchant_category, country, hour):
     """
     Predict if a transaction is fraudulent
     """
     try:
+        # Validate that values exist in encoders
+        if transaction_type not in TRANSACTION_TYPES:
+            raise ValueError(f"Invalid transaction type. Must be one of: {TRANSACTION_TYPES}")
+        if merchant_category not in MERCHANT_CATEGORIES:
+            raise ValueError(f"Invalid merchant category. Must be one of: {MERCHANT_CATEGORIES}")
+        if country not in COUNTRIES:
+            raise ValueError(f"Invalid country. Must be one of: {COUNTRIES}")
+        
         # Step 1: Encode categorical features
         trans_enc = le_transaction.transform([transaction_type])[0]
         merch_enc = le_merchant.transform([merchant_category])[0]
@@ -78,8 +95,20 @@ def predict_fraud(amount, transaction_type, merchant_category, country, hour):
 
 @app.route('/')
 def home():
-    """Render the main page"""
-    return render_template('index.html')
+    """Render the main page with dynamic options"""
+    return render_template('index.html',
+                         transaction_types=TRANSACTION_TYPES,
+                         merchant_categories=MERCHANT_CATEGORIES,
+                         countries=COUNTRIES)
+
+@app.route('/api/options')
+def get_options():
+    """API endpoint to get available options"""
+    return jsonify({
+        'transaction_types': TRANSACTION_TYPES,
+        'merchant_categories': MERCHANT_CATEGORIES,
+        'countries': COUNTRIES
+    })
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -125,7 +154,7 @@ def predict():
     except ValueError as e:
         return jsonify({
             'success': False,
-            'message': 'Invalid input format'
+            'message': str(e)
         }), 400
     except Exception as e:
         return jsonify({
@@ -138,7 +167,12 @@ def health():
     """Health check endpoint"""
     return jsonify({
         'status': 'healthy',
-        'model_loaded': model is not None
+        'model_loaded': model is not None,
+        'options_loaded': {
+            'transaction_types': len(TRANSACTION_TYPES),
+            'merchant_categories': len(MERCHANT_CATEGORIES),
+            'countries': len(COUNTRIES)
+        }
     })
 
 if __name__ == '__main__':
